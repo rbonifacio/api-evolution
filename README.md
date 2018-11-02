@@ -17,7 +17,7 @@ bouncy-castle,1.6.0,jdk12,/Users/rbonifacio/Documents/workspace-java/jdk12-160.j
 
 ## To run this program
 
-In Eclipse, you just need to configure a new Run Configuration pointing to the `br.unb.cic.api_evolution.Main` class and set the name of the CSV file used as input. Optionally, you can also specify the output format (as a second argument to the program): either "pl" to Prolog or "csv" to CSV. Improvements are welcome. 
+Using Eclipse, you just need to configure a new Run Configuration pointing to the `br.unb.cic.api_evolution.App` class and set the name of the CSV file used as input. Optionally, you can also specify the output format (as a second argument to the program): either "pl" to Prolog or "csv" to CSV. Improvements are welcome. 
 
 ## Output 
 
