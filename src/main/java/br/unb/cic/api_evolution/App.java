@@ -53,6 +53,7 @@ public class App
 	    		export.export(i++, r);
     		}
     		pw.close();
+    		//navigateDiffChange();
     	}
     	catch(Exception e) {
     		e.printStackTrace();
@@ -71,7 +72,7 @@ public class App
     		APIDiff diff = new APIDiff("BC", "https://github.com/bcgit/bc-java.git");
     	
 	    	diff.setPath("/Users/rbonifacio/tmp/github");
-	    	Result result = diff.detectChangeBetweenRevisions("r1rv49", "r1v60", Classifier.NON_API);
+	    	Result result = diff.detectChangeAllHistory(Classifier.API);
 	    	for(Change ct : result.getChangeMethod()){
 	    	    System.out.println("\n" + ct.getCategory().getDisplayName() + " - " + ct.getDescription());
 	    	}

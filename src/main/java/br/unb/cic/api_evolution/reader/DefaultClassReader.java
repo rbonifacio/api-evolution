@@ -1,5 +1,6 @@
 package br.unb.cic.api_evolution.reader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -27,7 +28,17 @@ public class DefaultClassReader implements IClassReader {
 			AnalysisScope scope = AnalysisScope.createJavaAnalysisScope();
 			//scope.addToScope(ClassLoaderReference.Primordial, new JarFile("jSDG-stubs-jre1.5.jar")); 
 		
-			scope.addToScope(ClassLoaderReference.Primordial, new JarFile(jreClasses(javaVersion))); 
+			File folder = new File(jreClasses(javaVersion));
+			File[] listOfFiles = folder.listFiles();
+			
+			for(File f: listOfFiles) {
+				if(f.getName().endsWith("jar")) {
+					System.out.println("Adding JAR file:" + f.getAbsolutePath());
+					scope.addToScope(ClassLoaderReference.Primordial, new JarFile(f.getAbsolutePath())); 
+				}
+			}
+			
+			//scope.addToScope(ClassLoaderReference.Primordial, new JarFile(jreClasses(javaVersion))); 
 			
 			scope.addToScope(ClassLoaderReference.Application,new JarFile(jarFile));
 			
@@ -38,9 +49,13 @@ public class DefaultClassReader implements IClassReader {
 			for(IClass c: h) {
 				try {
 					if(filter(c)) {
-				
 						APIClass ac = new APIClass();
-						ac.setClassName(c.getName().toString());
+						ac.setClassName(c.getName().toString().replaceAll("/", ".").substring(1));
+						ac.setSuperClass(c.getSuperclass().getName().toString().replaceAll("/", ".").substring(1));
+					
+						for(IClass anInterface : c.getAllImplementedInterfaces()) {
+							ac.addInterface(anInterface.getName().toString().replace("/", ".").substring(1));
+						}
 						
 						for(IMethod m : c.getAllMethods()) {
 							APIMethod am = new APIMethod();
@@ -54,17 +69,17 @@ public class DefaultClassReader implements IClassReader {
 							
 							//args
 							for(int i = 0; i < m.getNumberOfParameters(); i++) {
-								args.add(m.getParameterType(i).getName().toString());
+								args.add(m.getParameterType(i).toString().replace("/", ".").substring(1));
 							}
 							
 							//exceptions 
 							for(TypeReference t: m.getDeclaredExceptions()) {
-								exceptions.add(t.getName().toString());
+								exceptions.add(t.getName().toString().replace("/", ".").substring(1));
 							}
 							
 							am.setArgs(args);
 							am.setExceptions(exceptions);
-							am.setReturnType(m.getReturnType().toString());	
+							am.setReturnType(m.getReturnType().toString().replace("/", ".").substring(1));	
 							ac.addMethod(am);
 						}
 						css++;
@@ -85,7 +100,7 @@ public class DefaultClassReader implements IClassReader {
 			System.out.println("Classes: " + css);
 			System.out.println("Classes: " + ncss);
 			
-			
+			System.out.println("Classes added " + classes.size());
 			return classes;
 		}
 		catch(Throwable t) {

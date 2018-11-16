@@ -17,6 +17,7 @@ public class PrologWriter implements Writer {
 	@Override
 	public void export(Integer id, APIRelease release) {
 		try {
+			pw.println(":- module(releases, [release/4, class/5, method/7]). \n\n");
 			exportRelease(id, release);
 			exportClasses(id, release.getClasses());
 			exportMethods(id, release.getClasses());
@@ -33,7 +34,7 @@ public class PrologWriter implements Writer {
 	private void exportClasses(Integer idRelease, List<APIClass> classes) {
 		for(Integer i = 0; i < classes.size(); i++) {
 			APIClass c = classes.get(i);
-			pw.println(StringUtils.generateFact("class",idRelease.toString(), i.toString(),  c.getClassName()));
+			pw.println(StringUtils.generateFact("class",idRelease.toString(), i.toString(),  c.getClassName(),c.getSuperClass(), StringUtils.generateList(c.getInterfaces().toArray(new String[c.getInterfaces().size()]))));
 		}
 	}
 	
@@ -46,7 +47,8 @@ public class PrologWriter implements Writer {
 						m.getReturnType(),
 						m.getName(), 
 						StringUtils.generateList(m.getArgs().toArray(new String[m.getArgs().size()])),
-						StringUtils.generateList(m.getExceptions().toArray(new String[m.getExceptions().size()]))));
+						StringUtils.generateList(m.getExceptions().toArray(new String[m.getExceptions().size()])), 
+						m.getSignature()));
 			}
 		}
 	}
