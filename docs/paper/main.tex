@@ -1,0 +1,73 @@
+\documentclass{article}
+
+\usepackage{enumerate}
+\usepackage{xspace}
+
+\newcommand{\report}{report\xspace}
+
+\author{Handrick Costa and Rodrigo Bonif\'{a}cio and Stefan Krueger and Eric Bodden}
+
+\title{On the Design and Evolution of Cryptographic APIs}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+% discuss the challenge of design resilient APIs.
+
+Application Programming Interfaces (APIs) are essencial
+building blocks for software development and are widespread
+used for reusing components (in many cases even accross applications
+from different domains). A properly designed API should provide reusable
+abstractions and hide implementation details, so that the API could
+evolve while keeping backward compatibility. In this way, 
+programs that depend on a specific API do not break
+with the evolution of such an API. Surely, designing a
+resilient API is a challenging task, and several research works
+try to characterize how APIs evolve.   
+
+Differently from existing works, in this \report we focus on
+the design and evolution of cryptographic APIs. We have two
+main reasons for that. First, we have developed a domain specific
+language (CrySL) for specifying the correct usage of cryptographic APIs.
+Depending on the evolution of these APIs, new constructs should
+be necessary to this language. Second, the discovery of
+threats related to cryptographic algorithms might
+introduce new vulnerabilities into programs, which might obligate
+developers to evolve an API---since insecure implementations
+should be removed from new releases or at least marked as deprecated.
+This leads to a conflicting situation:
+removing insecure implementations of
+a cryptographic API might lead to \emph{breaking changes}, though
+keeping insecure implementations available in APIs
+might guide developers to implement insecure software.
+
+
+In this way, we investigate the following research
+questions:
+
+\begin{enumerate}[(RQ1)]
+\item What idioms do developers use to design cryptographic APIs?
+
+\item How do developers evolve cryptographic API and how often breaking changes occur?
+  
+\item Do developers depracate old and insecure algorithms of cryptographic APIs? 
+\end{enumerate}  
+
+Answer to these questions might bring new insights about how to design and use cryptographic APIs and how to specify policies and static analysis tools that aim
+to guarantee the correct usage of these APIs, considering that they
+might evolve along the time. Altogether, the contribution of
+this report is three-fold:
+
+
+
+% It seems that the old style for implementing modules in
+% Java projects is not suitable for clearly separating
+% internal utility functions of the real API classes. 
+\end{document}
